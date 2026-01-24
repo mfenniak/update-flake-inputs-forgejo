@@ -10,7 +10,7 @@ inputs:
   forgejo-token:
     description: 'forgejo authentication token'
     required: true
-    default: ${{ secrets.forgejo_TOKEN }}
+    default: ${{ secrets.FORGEJO_TOKEN }}
   forgejo-repository:
     description: 'Repository in format owner/repo'
     required: false
