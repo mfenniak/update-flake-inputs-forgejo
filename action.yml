@@ -51,6 +51,14 @@ inputs:
     description: 'Git committer email for commits'
     required: false
     default: 'forgejo-actions[bot]@noreply.forgejo.io'
+  git-signing-key:
+    description: 'SSH private key for signing commits'
+    required: false
+    default: ''
+  git-signing-pubkey:
+    description: 'SSH public key for signing commits'
+    required: false
+    default: ''
 
 runs:
   using: 'composite'
@@ -72,8 +80,14 @@ runs:
         export NIX_CONFIG="${our_nix_config}${NIX_CONFIG:+
         $NIX_CONFIG}"
 
-        set -x
+        if [[ -n "${{ inputs.git-signing-key }}" ]]; then
+          export GIT_SIGNING_KEY="${{ inputs.git-signing-key }}"
+        fi
+        if [[ -n "${{ inputs.git-signing-pubkey }}" ]]; then
+          export GIT_SIGNING_PUBKEY="${{ inputs.git-signing-pubkey }}"
+        fi
 
+        set -x
         nix run \
           "${GITHUB_ACTION_PATH}#update-flake-inputs" -- \
           --gitea-url "${{ inputs.forgejo-url }}" \
