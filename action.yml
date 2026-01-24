@@ -1,20 +1,20 @@
 name: 'Update Flake Inputs'
-description: 'Creates pull requests for each flake input update on Gitea'
+description: 'Creates pull requests for each flake input update on Forgejo'
 author: 'Your Name'
 
 inputs:
-  gitea-url:
-    description: 'Gitea server URL'
+  forgejo-url:
+    description: 'forgejo server URL'
     required: true
-    default: ${{ gitea.server_url }}
-  gitea-token:
-    description: 'Gitea authentication token'
+    default: ${{ forgejo.server_url }}
+  forgejo-token:
+    description: 'forgejo authentication token'
     required: true
-    default: ${{ secrets.GITEA_TOKEN }}
-  gitea-repository:
+    default: ${{ secrets.forgejo_TOKEN }}
+  forgejo-repository:
     description: 'Repository in format owner/repo'
     required: false
-    default: ${{ gitea.repository }}
+    default: ${{ forgejo.repository }}
   exclude-patterns:
     description: 'Comma-separated list of glob patterns to exclude flake.nix files'
     required: false
@@ -34,19 +34,19 @@ inputs:
   git-author-name:
     description: 'Git author name for commits'
     required: false
-    default: 'gitea-actions[bot]'
+    default: 'forgejo-actions[bot]'
   git-author-email:
     description: 'Git author email for commits'
     required: false
-    default: 'gitea-actions[bot]@noreply.gitea.io'
+    default: 'forgejo-actions[bot]@noreply.forgejo.io'
   git-committer-name:
     description: 'Git committer name for commits'
     required: false
-    default: 'gitea-actions[bot]'
+    default: 'forgejo-actions[bot]'
   git-committer-email:
     description: 'Git committer email for commits'
     required: false
-    default: 'gitea-actions[bot]@noreply.gitea.io'
+    default: 'forgejo-actions[bot]@noreply.forgejo.io'
 
 runs:
   using: 'composite'
@@ -72,9 +72,9 @@ runs:
 
         nix run \
           "${GITHUB_ACTION_PATH}#update-flake-inputs" -- \
-          --gitea-url "${{ inputs.gitea-url }}" \
-          --gitea-token "${{ inputs.gitea-token }}" \
-          --gitea-repository "${{ inputs.gitea-repository }}" \
+          --gitea-url "${{ inputs.forgejo-url }}" \
+          --gitea-token "${{ inputs.forgejo-token }}" \
+          --gitea-repository "${{ inputs.forgejo-repository }}" \
           --exclude-patterns "${{ inputs.exclude-patterns }}" \
           --base-branch "${{ inputs.base-branch }}" \
           --git-author-name "${{ inputs.git-author-name }}" \
