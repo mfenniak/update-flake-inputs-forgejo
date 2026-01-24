@@ -81,4 +81,5 @@ runs:
           --git-author-email "${{ inputs.git-author-email }}" \
           --git-committer-name "${{ inputs.git-committer-name }}" \
           --git-committer-email "${{ inputs.git-committer-email }}" \
+          --verbose \
           $AUTO_MERGE_FLAG
