@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .exceptions import UpdateFlakeInputsError
 from .flake_service import FlakeService
+from .git_service import GitService
 from .gitea_service import GiteaService
 
 logger = logging.getLogger(__name__)
@@ -113,6 +114,18 @@ def parse_args() -> argparse.Namespace:
             "Git committer email (defaults to GIT_COMMITTER_EMAIL env var "
             "or 'gitea-actions[bot]@noreply.gitea.io')"
         ),
+    )
+
+    parser.add_argument(
+        "--git-signing-key",
+        default=os.environ.get("GIT_SIGNING_KEY"),
+        help="Git SSH private key to use for commit signing (defaults to GIT_SIGNING_KEY env var')",
+    )
+
+    parser.add_argument(
+        "--git-signing-pubkey",
+        default=os.environ.get("GIT_SIGNING_PUBKEY"),
+        help="Git SSH public key to use for commit signing (defaults to GIT_SIGNING_PUBKEY env var')",
     )
 
     return parser.parse_args()
@@ -266,6 +279,11 @@ def main() -> None:
 
         # Create services
         flake_service = FlakeService()
+        git_service = GitService(
+            private_key=args.git_signing_key,
+            public_key=args.git_signing_pubkey,
+            path=Path()
+        )
         gitea_service = GiteaService(
             api_url=args.gitea_url,
             token=args.gitea_token,
