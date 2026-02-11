@@ -66,6 +66,13 @@ runs:
     - name: Run update-flake-inputs
       shell: bash
       run: |
+        # Workaround for https://code.forgejo.org/forgejo/runner/issues/1369
+        set -e
+        pushd "$GITHUB_ACTION_PATH"
+        rm -f .git && git init && git add . && git commit -m"hack"
+        popd
+        set +e
+
         AUTO_MERGE_FLAG=""
         if [[ "${{ inputs.auto-merge }}" == "true" ]]; then
           AUTO_MERGE_FLAG="--auto-merge"
